@@ -1,0 +1,6 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/cesargonzalez-org-app/cesargonzalez-org-app.html",
+  "fragments": [
+  ]
+}

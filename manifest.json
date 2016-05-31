@@ -1,0 +1,7 @@
+{
+  "name": "cesargonzalez-org",
+  "short_name": "cesargonzalez-org",
+  "description": "Caesar&#39;s personal page",
+  "start_url": "/",
+  "display": "standalone"
+}

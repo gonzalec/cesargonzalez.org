@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="cesargonzalez-org-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <paper-header-panel>
+      <div class="paper-header">Header</div>
+      <div>Content goes here...</div>
+    </paper-header-panel>
+    <h1>César González's Web Page </h1>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+º
+  <script>
+    Polymer({
+
+      is: 'cesargonzalez-org-app',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'cesargonzalez-org-app',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
