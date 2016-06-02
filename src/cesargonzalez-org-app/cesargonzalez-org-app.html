@@ -2,35 +2,286 @@
 <!-- 2. Use an HTML Import to bring in some elements. -->
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
 <link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation.html">
+<link rel="import" href="../../bower_components/parallax-element/parallax-element.html">
 
-<style is="custom-style" include="iron-flex"></style>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 
 <dom-module id="cesargonzalez-org-app">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <paper-header-panel mode="waterfall-tall" class="flex">
-      <paper-toolbar>
-        <paper-icon-button icon="menu"></paper-icon-button>
-        <span class="title">Cesar Gonzalez</span>
-      </paper-toolbar>
-      <div class="content fit">
-        <p>
-          Content goes here...
-        </p>
-        <h1>César González's Web Page </h1>
-        <h2>Hello [[prop1]]</h2>
-      </div>
+  <style include="iron-flex iron-flex-alignment iron-positioning"></style>
+  <style>
 
-    </paper-header-panel>
+    :host {
+      display: block;
+      font-family: 'Open Sans';
+      height: 100%;
+      --my-custom-color: #e1f554;
+      --paper-tab-ink: var(--my-custom-color);
+      --paper-tabs-selection-bar-color: #e1f554;
+      --paper-tabs: {
+        color: #555;
+        font-size: 0.7em;
+      }
+    }
+
+    paper-scroll-header-panel {
+      background-color: #444;
+    }
+
+    app-header::after {
+      box-shadow: inset 0px 5px 6px -3px rgba(0, 0, 0, 0.04);
+    }
+
+    paper-toolbar {
+      background-color: #fff;
+      color: #000;
+    }
+
+    paper-tabs {
+      height: 100%;
+    }
+
+    .content {
+      padding: 16px 10px 16px 50px;
+      background-color: #fff;
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDk5NjU4RjNBMDEzMTFFNTk3OThDMTVFMEE5NDVGNUMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDk5NjU4RjRBMDEzMTFFNTk3OThDMTVFMEE5NDVGNUMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEOTk2NThGMUEwMTMxMUU1OTc5OEMxNUUwQTk0NUY1QyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpEOTk2NThGMkEwMTMxMUU1OTc5OEMxNUUwQTk0NUY1QyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PpnS36IAABC8SURBVHja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');
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      background-color: #FFF;
+      font-weight: 400;
+      z-index: 100;
+    }
+
+    parallax-element {
+      height: 100vh;
+    }
+
+    parallax-layers {
+      min-height: 400px;
+      z-index: -1;
+    }
+
+    parallax-layers > .deep-layer {
+      background-image: url("images/headerbg.jpg");
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      color: white;
+    }
+
+    neon-animated-pages {
+      overflow: hidden;
+    }
+
+    div.no-parallax {
+      width: 100vw;
+      z-index: 0;
+    }
+
+    .breadcrumb {
+      color: #ddd;
+    }
+
+  </style>
+  <template>
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}"
+               pattern="/:sectionName"
+               data="{{routeData}}"
+               tail="{{subrouteData}}"
+               active="active"></app-route>
+    <div class="layout vertical" style="height: 100%">
+      <app-header scroll-target="scrollingRegion" class="header" condenses reveals snaps shadow style="transition-duration: 0ms; transform: translate3d(0px, -1px, 0px);">
+        <app-toolbar>
+          <paper-icon-button icon="home"></paper-icon-button>
+          <div title>Cesar's Web Page <span hidden$="{{active}}" class="breadcrumb">: [[routeData.sectionName]]</span></div>
+          <paper-tabs selected="{{routeData.sectionName}}" attr-for-selected='key' no-slide class="bottom self-end" style="width: 400px;">
+            <paper-tab key='home'>Home</paper-tab>
+            <paper-tab key='profile'>Profile</paper-tab>
+            <paper-tab key='photos'>Photos</paper-tab>
+            <paper-tab key='projects'>Projects</paper-tab>
+            <paper-tab key='contact'>Contact me</paper-tab>
+          </paper-tabs>
+        </app-toolbar>
+      </app-header>
+
+      <neon-animated-pages selected='[[routeData.sectionName]]'
+                           attr-for-selected='key'
+                           entry-animation='slide-from-right-animation'
+                           exit-animation='slide-left-animation' class="fit">
+        <neon-animatable key='home'>
+          <parallax-element id="scrollingRegion">
+            <parallax-layers>
+              <div depth="-0.5" class="deep-layer fullbleed layout vertical center end-justified">
+                Hello
+              </div>
+            </parallax-layers>
+            <div class="no-parallax layout vertical center">
+              <div class="content">
+                <h1>César González's Web Page </h1>
+                <h2>Hello [[prop1]]</h2>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                </p>
+                <p>
+                Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+                </p>
+                <p>
+                Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+                </p>
+                <p>
+                Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                </p>
+                <p>
+                Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+                </p>
+                <p>
+                Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+                </p>
+                <p>
+                Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim.
+                </p>
+              </div>
+            </div>
+          </parallax-element>
+        </neon-animatable>
+        <neon-animatable key='profile'>
+          <h2>Profile</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+          </p>
+          <p>
+          Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+          </p>
+        </neon-animatable>
+        <neon-animatable key='photos'>
+          <h2>Photos</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+          </p>
+          <p>
+          Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+          </p>
+        </neon-animatable>
+        <neon-animatable key='projects'>
+          <h2>Projects</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+          </p>
+          <p>
+          Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+          </p>
+        </neon-animatable>
+        <neon-animatable key='contact'>
+          <h2>Contact me</h2>
+          <div>Route is <span hidden$="{{active}}">not</span> active.</div>
+          <paper-input label="Route path" value="{{route.path}}"></paper-input>
+          <paper-input label="Pattern to match" value="{{pattern}}"></paper-input>
+          <form is="iron-form" method="get" action="/" id="basic">
+            <paper-input name="name" label="Name" required></paper-input>
+            <br>
+            <paper-button raised onclick="_submit(event)">Enviar</paper-button>
+            <paper-button raised onclick="_reset(event)">Limpiar</paper-button>
+            <div class="output"></div>
+          </form>
+        </neon-animatable>
+
+    </neon-animated-pages>
+
+
+      <!-- <paper-scroll-header-panel class="flex" condenses scroll-away-topbar keep-condensed-header header-height="256" condensed-header-height="65"> -->
+
+        <!-- <paper-toolbar class="tall">
+          <paper-icon-button icon="menu"></paper-icon-button>
+          <span class="title">Cesar Gonzalez</span> -->
+
+          <!-- <nav>
+            <paper-button>Profile</paper-button>
+            <paper-button>Photos</paper-button>
+            <paper-button toggles>Projects</paper-button>
+            <paper-button>Contact me</paper-button>
+          </nav>
+          <nav>
+            <iron-selector attr-for-selected="name" selected="profile">
+              <div name="profile">Profile</div>
+              <div name="photos">Photos</div>
+              <div name="projects">Projects</div>
+              <div name="contact">Contact me</div>
+            </iron-selector>
+          </nav> -->
+
+          <!-- <paper-tabs selected="{{selected}}" no-slide class="bottom self-end" style="width: 400px;">
+            <paper-tab>Profile</paper-tab>
+            <paper-tab>Photos</paper-tab>
+            <paper-tab>Projects</paper-tab>
+            <paper-tab>Contact me</paper-tab>
+          </paper-tabs>
+        </paper-toolbar> -->
+        <!-- <div class="content">
+          <iron-pages selected="{{selected}}">
+          <div>Page 1</div>
+          <div>Page 2</div>
+          <div>Page 3</div>
+        </iron-pages>
+          <h1>César González's Web Page </h1>
+          <h2>Hello [[prop1]]</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+          </p>
+          <p>
+          Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+          </p>
+          <p>
+          Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+          </p>
+          <p>
+          Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet.
+          </p>
+          <p>
+          Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam.
+          </p>
+          <p>
+          Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim.
+          </p>
+        </div>
+      </paper-scroll-header-panel> -->
+    </div>
   </template>
-º
+
   <script>
     Polymer({
 
@@ -38,8 +289,10 @@
 
       properties: {
         prop1: {
-          type: String,
-          value: 'cesargonzalez-org-app',
+          value: function() {
+            var pathname = window.location.pathname;
+            console.log(pathname);
+          },
         },
       },
 
