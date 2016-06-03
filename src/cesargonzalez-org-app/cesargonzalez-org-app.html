@@ -132,7 +132,7 @@
             <paper-icon-button icon="home" class$="home-icon-button [[routeData.sectionName]]"></paper-icon-button>
           </a>
 
-          <div title>Cesar's Web Page <span hidden$="{{active}}" class="breadcrumb">: [[routeData.sectionName]]</span></div>
+          <div title>Cesar's Web Page <span hidden$="{{active}}" class="breadcrumb">: [[routeData.sectionName]] : [[currentSectionOrder]]</span></div>
           <paper-tabs selected="{{routeData.sectionName}}"
                       attr-for-selected="section-key"
                       no-slide
@@ -251,12 +251,10 @@
       is: 'cesargonzalez-org-app',
 
       properties: {
-        // prop1: {
-        //   value: function() {
-        //     var pathname = window.location.pathname;
-        //     console.log(pathname);
-        //   },
-        // }
+        currentSectionOrder: {
+          type: Number,
+          value: 0
+        }
       },
 
       observers: [ // register a single observer handler
@@ -276,7 +274,8 @@
       _pageChanged: function(event, element) {
           console.dir(event);
           console.dir(element);
-          debugger;
+          
+          this.currentSectionOrder = element.item.attributes['section-order'].value;
       },
 
       // Some console logs to show Lifecycle callbacks
