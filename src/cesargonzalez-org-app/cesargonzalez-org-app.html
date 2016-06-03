@@ -246,61 +246,59 @@
   </template>
 
   <script>
-    Polymer({
+Polymer({
 
-      is: 'cesargonzalez-org-app',
+  is: 'cesargonzalez-org-app',
 
-      properties: {
-        currentSectionOrder: {
-          type: Number,
-          value: 0
-        }
-      },
+  properties: {
+    currentSectionOrder: {
+      type: Number,
+      value: 0,
+    },
+  },
 
-      observers: [ // register a single observer handler
-        '_onRoutePathChanged(route.path)'
-      ],
+  observers: [// register a single observer handler
+    '_onRoutePathChanged(route.path)',
+  ],
 
-      _onRoutePathChanged: function(path) {
-        // If we do not have an initial URL section, we redirect to /home
-        // maybe app-router will should have a default route ?
-        console.log(path);
-        if (path === '/') {
-          this.set('route.path', '/home');
-        }
-      },
+  _onRoutePathChanged: function (path) {
+    // If we do not have an initial URL section, we redirect to /home
+    // maybe app-router will should have a default route ?
+    console.log(path);
+    if (path === '/') {
+      this.set('route.path', '/home');
+    }
+  },
 
-      // for the iron-select event, the event handler format is: eventHandler(event, element)
-      _pageChanged: function(event, element) {
-          console.dir(event);
-          console.dir(element);
-          
-          this.currentSectionOrder = element.item.attributes['section-order'].value;
-      },
+  // for the iron-select event, the event handler format is: eventHandler(event, element)
+  _pageChanged: function (event, element) {
+    console.dir(event);
+    console.dir(element);
+    this.currentSectionOrder = element.item.attributes['section-order'].value;
+  },
 
-      // Some console logs to show Lifecycle callbacks
+  // Some console logs to show Lifecycle callbacks
+  created: function () {
+    console.log(this.localName + '#' + this.id + ' was created');
+  },
 
-      created: function() {
-        console.log(this.localName + '#' + this.id + ' was created');
-      },
+  ready: function () {
+    console.log(this.localName + '#' + this.id + ' has local DOM initialized');
+  },
 
-      ready: function() {
-        console.log(this.localName + '#' + this.id + ' has local DOM initialized');
-      },
+  attached: function () {
+    console.log(this.localName + '#' + this.id + ' was attached');
+  },
 
-      attached: function() {
-        console.log(this.localName + '#' + this.id + ' was attached');
-      },
+  detached: function () {
+    console.log(this.localName + '#' + this.id + ' was detached');
+  },
 
-      detached: function() {
-        console.log(this.localName + '#' + this.id + ' was detached');
-      },
+  attributeChanged: function (name, type) {
+    console.log(this.localName + '#' + this.id + ' attribute ' + name +
+      ' was changed to ' + this.getAttribute(name));
+  },
 
-      attributeChanged: function(name, type) {
-        console.log(this.localName + '#' + this.id + ' attribute ' + name +
-          ' was changed to ' + this.getAttribute(name));
-      }
-
-    });
+});
   </script>
 </dom-module>
