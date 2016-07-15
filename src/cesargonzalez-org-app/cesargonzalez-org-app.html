@@ -243,6 +243,7 @@
 
     </neon-animated-pages>
     </div>
+    <div id="testDiv"></div>
   </template>
 
   <script>
@@ -283,7 +284,19 @@ Polymer({
   },
 
   ready: function () {
+    console.log('%cWelcome to my personal webpage with Polymer!\n%c',
+      'font-size:1.5em;color:#e1f554;', 'color:#555;font-size:1em;');
     console.log(this.localName + '#' + this.id + ' has local DOM initialized');
+
+    // Any node specified in the element's template with an id is stored by
+    // Polymer on the this.$ hash by id.
+    console.log(this.$);
+
+    // Test addings some html
+    this.$.testDiv.innerHTML = '<div id="dynElement1"></div>';
+
+    // now find into the new html and inject some text
+    this.$$('#dynElement1').innerText = 'dynamically injected text';
   },
 
   attached: function () {
